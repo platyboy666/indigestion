@@ -4,13 +4,37 @@ services:
   nginx:
     build: requirements/nginx/.
     container_name: nginx
+    depends_on:
+      - wordpress #wp-php peut etre ?
+      - mariadb
     ports:
       - "80:80"
     volumes:
-      - ./web:/var/www/html
+      - /home/pkorsako/data/web:/var/www/html
+    networks:
+      inception:
 
   wordpress:
     build: requirements/wordpress/.
     container_name: wp-php
+    depends_on:
+      - mariadb
     volumes:
-      - ./web:/var/www/html
+      - /home/pkorsako/data/web:/var/www/html
+    env_file:
+      - .env
+    networks:
+      inception:
+
+  mariadb:
+    build: requirements/mariadb/.
+    container_name: mariadb
+    volumes:
+      - /home/pkorsako/data/database:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      inception:
+
+networks:
+  inception:

@@ -1,10 +1,15 @@
 FROM debian:11
 
 RUN	apt-get update && apt-get upgrade -y && apt-get install -y \
-	php-fpm
+	php-fpm \
+	php-mysql \
+	curl
 
 RUN	mkdir -p /run/php
 
 COPY	conf/www.conf /etc/php/7.4/fpm/pool.d/.
+COPY	tools/init_wp.sh .
 
-CMD ["php-fpm7.4", "-F"]
+RUN	chmod +x init_wp.sh
+
+CMD ["./init_wp.sh"] ##CMD ["php-fpm7.4", "-F"]
