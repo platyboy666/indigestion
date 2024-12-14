@@ -8,7 +8,7 @@ services:
       - wordpress #wp-php peut etre ?
       - mariadb
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
       - /home/pkorsako/data/web:/var/www/html
     networks:
