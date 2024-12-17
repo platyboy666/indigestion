@@ -10,8 +10,8 @@ services:
     restart: unless-stopped
     ports:
       - "443:443"
-        #    volumes:
-        #      - /home/pkorsako/data/web:/var/www/html
+    volumes:
+      - wp:/var/www/html
     networks:
       inception:
 
@@ -22,7 +22,7 @@ services:
       - mariadb
     restart: unless-stopped
     volumes:
-      - /home/pkorsako/data/web:/var/www/html
+      - wp:/var/www/html
     env_file:
       - .env
     networks:
@@ -33,7 +33,7 @@ services:
     container_name: mariadb
     restart: unless-stopped
     volumes:
-      - /home/pkorsako/data/database:/var/lib/mysql
+      - mariadb:/var/lib/mysql
     env_file:
       - .env
     networks:
@@ -41,3 +41,21 @@ services:
 
 networks:
   inception:
+    name: inception_network
+    driver: bridge #ajouter
+
+volumes:
+  wp:
+    driver: local
+    name: volume_wp
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/pkorsako/data/wordpress
+  mariadb:
+    driver: local
+    name: volume_mariadb
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/pkorsako/data/wordpress

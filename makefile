@@ -10,6 +10,9 @@ up:
 down:
 	$(DOCKER_COMPOSE) -f $(YML_FILE) down
 
+downv:
+	$(DOCKER_COMPOSE) -f $(YML_FILE) down -v
+
 start:
 	$(DOCKER_COMPOSE) -f $(YML_FILE) start
 
@@ -20,9 +23,10 @@ restart: stop start
 
 clean: down
 	docker system prune -af
+	docker volume prune -f
 	docker network prune -f
 
 fclean: clean
-	sudo rm -rf /home/pkorsako/data/web/* /home/pkorsako/data/database/*
+	sudo rm -rf /home/pkorsako/data/mariadb/* /home/pkorsako/data/wordpress/*
 
 re: fclean all
